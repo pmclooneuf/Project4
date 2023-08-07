@@ -136,32 +136,32 @@ def main():
                         pg.quit()
                         sys.exit()
 
-            if event.type == pg.KEYDOWN and board.selected_cell.sketched is not None:  # if they press a key and have
+            if event.type == pg.KEYDOWN and board.selected_cell is not None:  # if they press a key and have
                 # a cell selected
                 if event.key == pg.K_RETURN:
                     board.place_number(board.selected_cell.sketched)
-                elif event.key == pg.K_BACKSPACE:     # add delete if they want to change the number
+                elif event.key == pg.K_BACKSPACE:  # add delete if they want to change the number
                     board.selected_cell.sketched = None
                 elif event.unicode.isdigit():
                     board.selected_cell.sketched = int(event.unicode)  # this could be an easier way if it works
-                elif event.key == pg.K_1:
-                    board.selected_cell.sketched = 1
-                elif event.key == pg.K_2:
-                    board.selected_cell.sketched = 2
-                elif event.key == pg.K_3:
-                    board.selected_cell.sketched = 3
-                elif event.key == pg.K_4:
-                    board.selected_cell.sketched = 4  # prob an easier way for this num stuf lmao
-                elif event.key == pg.K_5:
-                    board.selected_cell.sketched = 5
-                elif event.key == pg.K_6:
-                    board.selected_cell.sketched = 6
-                elif event.key == pg.K_7:
-                    board.selected_cell.sketched = 7
-                elif event.key == pg.K_8:
-                    board.selected_cell.sketched = 8
-                elif event.key == pg.K_9:
-                    board.selected_cell.sketched = 9
+                # elif event.key == pg.K_1:
+                #   board.selected_cell.sketched = 1
+                # elif event.key == pg.K_2:
+                #    board.selected_cell.sketched = 2
+                # elif event.key == pg.K_3:
+                #   board.selected_cell.sketched = 3
+                # elif event.key == pg.K_4:
+                #   board.selected_cell.sketched = 4  # prob an easier way for this num stuf lmao
+                # elif event.key == pg.K_5:
+                #    board.selected_cell.sketched = 5
+                # elif event.key == pg.K_6:
+                #   board.selected_cell.sketched = 6
+                # elif event.key == pg.K_7:
+                #   board.selected_cell.sketched = 7
+                # elif event.key == pg.K_8:
+                #   board.selected_cell.sketched = 8
+                # elif event.key == pg.K_9:
+                #   board.selected_cell.sketched = 9
 
         board.draw()
 
