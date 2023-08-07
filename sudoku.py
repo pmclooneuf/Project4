@@ -63,9 +63,37 @@ def start(screen): # this is just the first screen that shows the options and st
 
 
 
-def game_over(screen): # later lol
+def game_over(screen): # saving for later lol
     pass
 
+
+def game_buttons(screen): # this is for the reset, restart, and quit buttons on screen while playing
+    button_font = pg.font.Font(None, 50)
+    # reset 
+    reset_text = button_font.render("Reset", 1, 'white')
+    reset_surf = pg.Surface((reset_text.get_size()[0] + 20, reset_text.get_size()[1] + 20))
+    reset_surf.fill('black')
+    reset_surf.blit(reset_text, (10, 10))
+    reset_rect = reset_surf.get_rect(center=(WIDTH//3 - 100, 650))
+    screen.blit(reset_surf, reset_rect)
+    
+    # restart 
+    restart_text = button_font.render("Restart", 1, 'white')
+    restart_surf = pg.Surface((restart_text.get_size()[0] + 20, restart_text.get_size()[1] + 20))
+    restart_surf.fill('black')
+    restart_surf.blit(restart_text, (10, 10))
+    restart_rect = restart_surf.get_rect(center=(WIDTH//2, 650))
+    screen.blit(restart_surf, restart_rect)
+
+    # quit
+    quit_text = button_font.render("Quit", 1, 'white')
+    quit_surf = pg.Surface((quit_text.get_size()[0] + 20, quit_text.get_size()[1] + 20))
+    quit_surf.fill('black')
+    quit_surf.blit(quit_text, (10, 10))
+    quit_rect = quit_surf.get_rect(center=(WIDTH*(2/3) + 100, 650))
+    screen.blit(quit_surf, quit_rect)
+
+    return reset_rect, restart_rect, quit_rect
 
 
 def main():
@@ -77,33 +105,37 @@ def main():
     HEIGHT = 700
     screen = pg.display.set_mode((WIDTH, HEIGHT))
 
-    difficulty = start(screen)
+    difficulty = start(screen) # start screen menu, after they click difficulty button we can gen a board
 
     screen.fill(BG_COLOR)
 
     board = Board(WIDTH, HEIGHT - 100, screen, difficulty) # gens the actual board based on difficulty
-    # printed_board = []
-    # for row in range(len(board.cells)):
-    #     print_row = []
-    #     for col in range(len(board.cells[0])):
-    #         print_row.append(board.cells[row][col].value)
-    #     printed_board.append(print_row)
-    # print(printed_board)
 
-
-    while True:
+    while True: # start of the actual game loop
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            reset_rect, restart_rect, quit_rect = game_buttons(screen)
+
+            if event.type == pg.QUIT: # if they click x on window, exit
                 pg.quit()
                 sys.exit()
 
-            if event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pg.MOUSEBUTTONDOWN: # if they click
                 x, y = event.pos
                 click = board.click(x, y)
-                if click is not None:
-                    board.select(click[0], click[1])
+                if click is not None: # if click is actually on sudoku board
+                    board.select(click[0], click[1]) # select cell based on pos
+                else:
+                    if reset_rect.collidepoint(event.pos): # if click not in board, check if clicked buttons and do stuff
+                        # print('reset')
+                        pass
+                    elif restart_rect.collidepoint(event.pos):
+                        # print('restart')
+                        pass
+                    elif quit_rect.collidepoint(event.pos):
+                        pg.quit()
+                        sys.exit()
             
-            if event.type == pg.KEYDOWN and board.selected_cell.sketched != None:
+            if event.type == pg.KEYDOWN and board.selected_cell.sketched != None:  # if they press a key and have a cell selected
                 if event.key == pg.K_RETURN:
                     board.place_number(board.selected_cell.sketched)
                 elif event.key == pg.K_1:
@@ -113,7 +145,7 @@ def main():
                 elif event.key == pg.K_3:
                     board.selected_cell.sketched = 3
                 elif event.key == pg.K_4:
-                    board.selected_cell.sketched = 4
+                    board.selected_cell.sketched = 4 # prob an easier way for this num stuf lmao
                 elif event.key == pg.K_5:
                     board.selected_cell.sketched = 5
                 elif event.key == pg.K_6:

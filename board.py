@@ -68,8 +68,8 @@ class Board:
         else:
             return None
 
-    def clear(self):
-        pass
+    def clear(self): # basically in main in sudoku.py, if key.pressed is backspace do this
+        pass # prob just self.selected_cell.value = 0 
     
     def sketch(self, value): # maybe dont need to use?
         pass
@@ -87,16 +87,16 @@ class Board:
                     self.cells[x][y].set_sketched_value(0)
         self.selected = False
 
-    def is_full(self):
+    def is_full(self): # used to determine if they're done, check if win later
         pass
 
-    def update_board():
+    def update_board(): # idk if we need this either actually
         pass
 
-    def find_empty():
+    def find_empty(): # maybe used in is_full ?
         pass
     
-    def check_board(self):
+    def check_board(self): # check for win
         pass
 
     
