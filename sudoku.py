@@ -1,6 +1,6 @@
 import pygame as pg
 import sys
-from my_board import Board
+from board import Board
 from constants import *
 
 def start(screen): # this is just the first screen that shows the options and stuff before the game, also gets difficulty

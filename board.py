@@ -1,7 +1,7 @@
 import pygame as pg
-from my_sudoku_generator import generate_sudoku
+from sudoku_generator import generate_sudoku
 from constants import *
-from my_cell import Cell
+from cell import Cell
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
