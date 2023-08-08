@@ -141,7 +141,9 @@ def main():
                 if event.key == pg.K_RETURN:
                     board.place_number(board.selected_cell.sketched)
                 elif event.key == pg.K_BACKSPACE:  # add delete if they want to change the number
-                    board.selected_cell.sketched = None
+                    # board.selected_cell.sketched = None
+                    # or should we do this
+                    board.clear()
                 elif event.unicode.isdigit():
                     board.selected_cell.sketched = int(event.unicode)  # this could be an easier way if it works
                 # elif event.key == pg.K_1:
