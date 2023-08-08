@@ -93,7 +93,7 @@ def game_end(win, screen):  # saving for later lol
 
         # title
         title_font = pg.font.Font(None, 80)
-        title_surface = title_font.render("YOU WON", 0, 'black')
+        title_surface = title_font.render("YOU LOST", 0, 'black')
         title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
         screen.blit(title_surface, title_rectangle)
 
