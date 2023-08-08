@@ -6,8 +6,7 @@ from board import Board
 from constants import *
 
 
-def start(
-        screen):  # this is just the first screen that shows the options and stuff before the game, also gets difficulty
+def start(screen):  # this is just the first screen that shows the options and stuff before the game, also gets difficulty
     # background
     background = pg.image.load("images/background image.jpg").convert()
     screen.blit(background, (0, 0))
@@ -54,7 +53,7 @@ def start(
                 pg.quit()
                 sys.exit()
 
-            if event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pg.MOUSEBUTTONDOWN: # when they click the difficulty buttons, return how many cells to remove
                 if easy_rect.collidepoint(event.pos):
                     return 30
                 elif medium_rect.collidepoint(event.pos):
@@ -65,8 +64,47 @@ def start(
         pg.display.update()
 
 
-def game_over(screen):  # saving for later lol
-    pass
+def game_end(win, screen):  # saving for later lol
+    if win == True:
+        pg.time.delay(1000)
+        # background
+        background = pg.image.load("images/background image.jpg").convert()
+        screen.blit(background, (0, 0))
+
+        # title
+        title_font = pg.font.Font(None, 80)
+        title_surface = title_font.render("YOU LOST", 0, 'black')
+        title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
+        screen.blit(title_surface, title_rectangle)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+
+            pg.display.update()
+
+    else:
+        pg.time.delay(1000)
+        # background
+        background = pg.image.load("images/background image.jpg").convert()
+        screen.blit(background, (0, 0))
+
+        # title
+        title_font = pg.font.Font(None, 80)
+        title_surface = title_font.render("YOU WON", 0, 'black')
+        title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 150))
+        screen.blit(title_surface, title_rectangle)
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+
+            pg.display.update()
+
 
 
 def game_buttons(screen):  # this is for the reset, restart, and quit buttons on screen while playing
@@ -100,6 +138,7 @@ def game_buttons(screen):  # this is for the reset, restart, and quit buttons on
 
 def main():
     game_over = False
+    win = False
 
     pg.init()
     pg.display.set_caption("Sudoku")
@@ -113,9 +152,14 @@ def main():
 
     board = Board(WIDTH, HEIGHT - 100, screen, difficulty)  # gens the actual board based on difficulty
 
-    while True:  # start of the actual game loop
+    while not game_over:  # start of the actual game loop
         for event in pg.event.get():
             reset_rect, restart_rect, quit_rect = game_buttons(screen)
+
+            if board.is_full():
+                game_over = True
+                win = board.check_board()
+
 
             if event.type == pg.QUIT:  # if they click x on window, exit
                 pg.quit()
@@ -133,45 +177,28 @@ def main():
                                 if board.cells[row][col].sketched is not None:
                                     board.cells[row][col].sketched = 0
                                     board.cells[row][col].value = 0
-                    elif restart_rect.collidepoint(event.pos):  # returns to min menu
+                    elif restart_rect.collidepoint(event.pos):  # returns to main menu
                         main()
                     elif quit_rect.collidepoint(event.pos):
                         pg.quit()
                         sys.exit()
             
-            if event.type == pg.KEYDOWN and board.selected_cell.sketched is not None:  # if they press a key and have a cell selected
+            if event.type == pg.KEYDOWN and board.selected_cell.sketched is not None:  # if they press a key and selected a mutable cell
                 if event.key == pg.K_BACKSPACE:
                     board.clear() # should be good basically
                 if event.key == pg.K_RETURN:
                     board.place_number(board.selected_cell.sketched)
-                elif event.key == pg.K_BACKSPACE:  # add delete if they want to change the number
-                    # board.selected_cell.sketched = None
-                    # or should we do this
+                elif event.key == pg.K_BACKSPACE:  
                     board.clear()
                 elif event.unicode.isdigit():
-                    board.selected_cell.sketched = int(event.unicode)  # this could be an easier way if it works
-                # elif event.key == pg.K_1:
-                #   board.selected_cell.sketched = 1
-                # elif event.key == pg.K_2:
-                #    board.selected_cell.sketched = 2
-                # elif event.key == pg.K_3:
-                #   board.selected_cell.sketched = 3
-                # elif event.key == pg.K_4:
-                #   board.selected_cell.sketched = 4  # prob an easier way for this num stuf lmao
-                # elif event.key == pg.K_5:
-                #    board.selected_cell.sketched = 5
-                # elif event.key == pg.K_6:
-                #   board.selected_cell.sketched = 6
-                # elif event.key == pg.K_7:
-                #   board.selected_cell.sketched = 7
-                # elif event.key == pg.K_8:
-                #   board.selected_cell.sketched = 8
-                # elif event.key == pg.K_9:
-                #   board.selected_cell.sketched = 9
-
+                    board.selected_cell.sketched = int(event.unicode) # gets the number they pressed
+                
         board.draw()
 
         pg.display.update()
+
+    game_end(win, screen)
+
 
 
 if __name__ == '__main__':

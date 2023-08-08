@@ -109,4 +109,29 @@ class Board:
         return None
 
     def check_board(self):  # check for win
-        pass
+        # get the board of numbers
+        int_board = []
+        for row in range(len(self.cells)):
+            int_row = []
+            for col in range(len(self.cells[0])):
+                int_row.append(self.cells[row][col].value)
+            int_board.append(int_row)
+
+        # check rows
+        for row in int_board:
+            if len(set(row)) < 9:
+                return False
+            
+        # check columns
+        for col in range(len(int_board[0])):
+            column = [row[col] for row in int_board]
+            if len(set(column)) < len(int_board):
+                return False
+            
+        return True
+            
+
+
+
+        
+
