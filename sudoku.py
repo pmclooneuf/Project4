@@ -1,5 +1,7 @@
 import pygame as pg
 import sys
+
+import constants
 from board import Board
 from constants import *
 
@@ -124,19 +126,21 @@ def main():
                 click = board.click(x, y)
                 if click is not None:  # if click is actually on sudoku board
                     board.select(click[0], click[1])  # select cell based on pos
-                else:
-                    if reset_rect.collidepoint(
-                            event.pos):  # if click not in board, check if clicked buttons and do stuff
-                        # print('reset')
-                        pass
-                    elif restart_rect.collidepoint(event.pos):
-                        # print('restart')
-                        pass
+                else:  # if click not in board, check if clicked buttons and do stuff
+                    if reset_rect.collidepoint(event.pos):  # goes through all input cells and wipes them
+                        for row in range(len(board.cells)):
+                            for col in range(len(board.cells[0])):
+                                board.selected_cell = board.cells[row][col]
+                                if board.selected_cell.sketched == 0:
+                                    board.selected_cell.sketched = None
+                                    board.place_number(0)
+                    elif restart_rect.collidepoint(event.pos):  # returns to min menu
+                        main()
                     elif quit_rect.collidepoint(event.pos):
                         pg.quit()
                         sys.exit()
             
-            if event.type == pg.KEYDOWN and board.selected_cell.sketched != None:  # if they press a key and have a cell selected
+            if event.type == pg.KEYDOWN and board.selected_cell.sketched is not None:  # if they press a key and have a cell selected
                 if event.key == pg.K_BACKSPACE:
                     board.clear() # should be good basically
                 if event.key == pg.K_RETURN:
