@@ -3,7 +3,9 @@ import sys
 from board import Board
 from constants import *
 
-def start(screen): # this is just the first screen that shows the options and stuff before the game, also gets difficulty
+
+def start(
+        screen):  # this is just the first screen that shows the options and stuff before the game, also gets difficulty
     # background
     background = pg.image.load("images/background image.jpg").convert()
     screen.blit(background, (0, 0))
@@ -20,7 +22,7 @@ def start(screen): # this is just the first screen that shows the options and st
     choose_rectangle = choose_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
     screen.blit(choose_surface, choose_rectangle)
 
-    #buttons
+    # buttons
     button_font = pg.font.Font(None, 50)
     # easy
     easy_text = button_font.render("Easy", 1, 'black')
@@ -44,7 +46,6 @@ def start(screen): # this is just the first screen that shows the options and st
     hard_rect = hard_surf.get_rect(center=(450, HEIGHT // 2 + 150))
     screen.blit(hard_surf, hard_rect)
 
-
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -58,31 +59,30 @@ def start(screen): # this is just the first screen that shows the options and st
                     return 40
                 elif hard_rect.collidepoint(event.pos):
                     return 50
-        
+
         pg.display.update()
 
 
-
-def game_over(screen): # saving for later lol
+def game_over(screen):  # saving for later lol
     pass
 
 
-def game_buttons(screen): # this is for the reset, restart, and quit buttons on screen while playing
+def game_buttons(screen):  # this is for the reset, restart, and quit buttons on screen while playing
     button_font = pg.font.Font(None, 50)
     # reset 
     reset_text = button_font.render("Reset", 1, 'white')
     reset_surf = pg.Surface((reset_text.get_size()[0] + 20, reset_text.get_size()[1] + 20))
     reset_surf.fill('black')
     reset_surf.blit(reset_text, (10, 10))
-    reset_rect = reset_surf.get_rect(center=(WIDTH//3 - 100, 650))
+    reset_rect = reset_surf.get_rect(center=(WIDTH // 3 - 100, 650))
     screen.blit(reset_surf, reset_rect)
-    
+
     # restart 
     restart_text = button_font.render("Restart", 1, 'white')
     restart_surf = pg.Surface((restart_text.get_size()[0] + 20, restart_text.get_size()[1] + 20))
     restart_surf.fill('black')
     restart_surf.blit(restart_text, (10, 10))
-    restart_rect = restart_surf.get_rect(center=(WIDTH//2, 650))
+    restart_rect = restart_surf.get_rect(center=(WIDTH // 2, 650))
     screen.blit(restart_surf, restart_rect)
 
     # quit
@@ -90,7 +90,7 @@ def game_buttons(screen): # this is for the reset, restart, and quit buttons on 
     quit_surf = pg.Surface((quit_text.get_size()[0] + 20, quit_text.get_size()[1] + 20))
     quit_surf.fill('black')
     quit_surf.blit(quit_text, (10, 10))
-    quit_rect = quit_surf.get_rect(center=(WIDTH*(2/3) + 100, 650))
+    quit_rect = quit_surf.get_rect(center=(WIDTH * (2 / 3) + 100, 650))
     screen.blit(quit_surf, quit_rect)
 
     return reset_rect, restart_rect, quit_rect
@@ -105,27 +105,28 @@ def main():
     HEIGHT = 700
     screen = pg.display.set_mode((WIDTH, HEIGHT))
 
-    difficulty = start(screen) # start screen menu, after they click difficulty button we can gen a board
+    difficulty = start(screen)  # start screen menu, after they click difficulty button we can gen a board
 
     screen.fill(BG_COLOR)
 
-    board = Board(WIDTH, HEIGHT - 100, screen, difficulty) # gens the actual board based on difficulty
+    board = Board(WIDTH, HEIGHT - 100, screen, difficulty)  # gens the actual board based on difficulty
 
-    while True: # start of the actual game loop
+    while True:  # start of the actual game loop
         for event in pg.event.get():
             reset_rect, restart_rect, quit_rect = game_buttons(screen)
 
-            if event.type == pg.QUIT: # if they click x on window, exit
+            if event.type == pg.QUIT:  # if they click x on window, exit
                 pg.quit()
                 sys.exit()
 
-            if event.type == pg.MOUSEBUTTONDOWN: # if they click
+            if event.type == pg.MOUSEBUTTONDOWN:  # if they click
                 x, y = event.pos
                 click = board.click(x, y)
-                if click is not None: # if click is actually on sudoku board
-                    board.select(click[0], click[1]) # select cell based on pos
+                if click is not None:  # if click is actually on sudoku board
+                    board.select(click[0], click[1])  # select cell based on pos
                 else:
-                    if reset_rect.collidepoint(event.pos): # if click not in board, check if clicked buttons and do stuff
+                    if reset_rect.collidepoint(
+                            event.pos):  # if click not in board, check if clicked buttons and do stuff
                         # print('reset')
                         pass
                     elif restart_rect.collidepoint(event.pos):
@@ -137,34 +138,38 @@ def main():
             
             if event.type == pg.KEYDOWN and board.selected_cell.sketched != None:  # if they press a key and have a cell selected
                 if event.key == pg.K_BACKSPACE:
-                    board.selected_cell.value = 0
+                    board.selected_cell.value = 0 # should be good basically
                 if event.key == pg.K_RETURN:
                     board.place_number(board.selected_cell.sketched)
-                elif event.key == pg.K_1:
-                    board.selected_cell.sketched = 1
-                elif event.key == pg.K_2:
-                    board.selected_cell.sketched = 2
-                elif event.key == pg.K_3:
-                    board.selected_cell.sketched = 3
-                elif event.key == pg.K_4:
-                    board.selected_cell.sketched = 4 # prob an easier way for this num stuf lmao
-                elif event.key == pg.K_5:
-                    board.selected_cell.sketched = 5
-                elif event.key == pg.K_6:
-                    board.selected_cell.sketched = 6
-                elif event.key == pg.K_7:
-                    board.selected_cell.sketched = 7
-                elif event.key == pg.K_8:
-                    board.selected_cell.sketched = 8
-                elif event.key == pg.K_9:
-                    board.selected_cell.sketched = 9
-                
-
+                elif event.key == pg.K_BACKSPACE:  # add delete if they want to change the number
+                    # board.selected_cell.sketched = None
+                    # or should we do this
+                    board.clear()
+                elif event.unicode.isdigit():
+                    board.selected_cell.sketched = int(event.unicode)  # this could be an easier way if it works
+                # elif event.key == pg.K_1:
+                #   board.selected_cell.sketched = 1
+                # elif event.key == pg.K_2:
+                #    board.selected_cell.sketched = 2
+                # elif event.key == pg.K_3:
+                #   board.selected_cell.sketched = 3
+                # elif event.key == pg.K_4:
+                #   board.selected_cell.sketched = 4  # prob an easier way for this num stuf lmao
+                # elif event.key == pg.K_5:
+                #    board.selected_cell.sketched = 5
+                # elif event.key == pg.K_6:
+                #   board.selected_cell.sketched = 6
+                # elif event.key == pg.K_7:
+                #   board.selected_cell.sketched = 7
+                # elif event.key == pg.K_8:
+                #   board.selected_cell.sketched = 8
+                # elif event.key == pg.K_9:
+                #   board.selected_cell.sketched = 9
 
         board.draw()
 
         pg.display.update()
 
+
 if __name__ == '__main__':
     main()
-
