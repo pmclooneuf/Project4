@@ -72,9 +72,7 @@ class Board:
             return None
 
     def clear(self):  # basically in main in sudoku.py, if key.pressed is backspace do this
-
-        self.selected_cell.sketched = None
-        pass  # prob just self.selected_cell.value = 0
+        self.selected_cell.value = 0
 
     def sketch(self, value):  # maybe dont need to use?
         pass
@@ -84,13 +82,14 @@ class Board:
         self.selected_cell.sketched = 0
 
     def reset_to_original(self):
-        for x in range(len(self.cells)):
-            for y in range(len(self.cells[0])):
-                if self.cells[x][y].sketched is None:
-                    self.cells[x][y].set_cell_value(self.cells[x][y].value)
-                else:
-                    self.cells[x][y].set_sketched_value(0)
-        self.selected = False
+        # for x in range(len(self.cells)):
+        #     for y in range(len(self.cells[0])):
+        #         if self.cells[x][y].sketched is None:
+        #             self.cells[x][y].set_cell_value(self.cells[x][y].value)
+        #         else:
+        #             self.cells[x][y].set_sketched_value(0)
+        # self.selected = False
+        pass
 
     def is_full(self):  # used to determine if they're done, check if win later
         for row in range(len(self.cells)):

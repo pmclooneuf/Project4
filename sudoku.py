@@ -138,7 +138,7 @@ def main():
             
             if event.type == pg.KEYDOWN and board.selected_cell.sketched != None:  # if they press a key and have a cell selected
                 if event.key == pg.K_BACKSPACE:
-                    board.selected_cell.value = 0 # should be good basically
+                    board.clear() # should be good basically
                 if event.key == pg.K_RETURN:
                     board.place_number(board.selected_cell.sketched)
                 elif event.key == pg.K_BACKSPACE:  # add delete if they want to change the number
