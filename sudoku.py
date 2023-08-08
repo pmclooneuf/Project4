@@ -130,10 +130,9 @@ def main():
                     if reset_rect.collidepoint(event.pos):  # goes through all input cells and wipes them
                         for row in range(len(board.cells)):
                             for col in range(len(board.cells[0])):
-                                board.selected_cell = board.cells[row][col]
-                                if board.selected_cell.sketched == 0:
-                                    board.selected_cell.sketched = None
-                                    board.place_number(0)
+                                if board.cells[row][col].sketched is not None:
+                                    board.cells[row][col].sketched = 0
+                                    board.cells[row][col].value = 0
                     elif restart_rect.collidepoint(event.pos):  # returns to min menu
                         main()
                     elif quit_rect.collidepoint(event.pos):
